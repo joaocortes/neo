@@ -1,0 +1,70 @@
+#+OPTIONS: toc:t 
+#+OPTIONS: tex:dvisvgm
+#+FILETAGS: 
+#+TODO: TODO(!) UNCHECKED(!) | DONE(!)
+#+TODO: ATTEMPT(p@/!) WORKING(@/!) | SOLVED(@!) GARBAGE(!)
+#+TODO: READING(!) DIGESTING(@/!) STOPPED(@/!) | ABSORBED(!)
+#+TODO: UNKNOWN(u!) THINKING(@/!) ASK(@/!) | KNOWN(@/!)
+#+TODO: FILLING(f@/!) | DONE(!)
+#+STARTUP: inlineimages
+#+STARTUP: logdrawer
+#+LATEX_HEADER: \usepackage{PhDbasilar}
+#+PROPERTY: header-args:bash  :eval query
+#+PROPERTY: header-args:latex  :headers \usepackage{PhDbasilar}
+#+HTML_HEAD: <style>.org-svg{width: auto; vertical-align: top ;} </style>
+#+OPTIONS: ^:nil
+#+OPTIONS: H:8
+#+OPTIONS: org-agenda-dim-blocked-tasks nil
+#+OPTIONS: todo:nil
+#+LATEX_CLASS: article
+* Neo
+  :PROPERTIES:
+  :alpha:    [2019-07-25 Thu 20:17]
+  :END:
+The usage of neo is parametrized by
+
+ant neoMorpheus -Dapp=./problem/Morpheus/r1.json -Ddepth=3 -Dlearn=true -Dstat=false -Dfile=sketches/ngram-size3.txt -Dspec=specs/Morpheus/
+**      [java] Exception in thread "main" java.lang.UnsatisfiedLinkError: no libz3java in java.library.path
+   :PROPERTIES:
+   :alpha:    [2019-07-25 Thu 20:17]
+   :END:
+
+z3 solver is a dependency of Neo.
+
+#+begin_src bash :eval no
+sudo dnf install z3
+#+end_src
+
+
+#+begin_src java :classname HelloWorld
+  public class HelloWorld {
+
+      public static void main(String[] args) {
+	  // Prints "Hello, World" to the terminal window.
+   System.out.println(System.getProperty("java.library.path"));
+      }
+
+  }
+#+end_src
+
+#+RESULTS:
+: /usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+
+[[https://chase-seibert.github.io/blog/2009/04/01/ant-javalibrarypath.html][Ant java.library.path]]
+#+begin_src xml :eval no
+  <target name="run" depends="deploy">
+       <java dir="${jlan}" classname="org.alfresco.jlan.app.JLANServer" fork="true">
+         <arg value="${jlan}/jlanConfig.xml"/>
+         <sysproperty key="java.library.path" path="${jlan}/jni"/>
+         <classpath>
+            <filelist dir="${jlan}">
+                <file name="jars/alfresco-jlan.jar" />
+                <file name="libs/cryptix-jce-provider.jar" />
+                <file name="service/wrapper.jar" />
+                <file name="libs/bullhorn-virtualfs-0.1.jar" />
+                <file name="libs/log4j-1.2.14.jar" />
+            </filelist>
+         </classpath>
+      </java>
+    </target>
+#+end_src
